@@ -3,10 +3,10 @@
   <FileVersion>3.0</FileVersion>
   <Workspace>
     <WorkspaceType>Single-project</WorkspaceType>
-    <WorkspacePath>D:\STM32\BTL_VXL\CO3009-Traffic-Light-System\Traffic_light\</WorkspacePath>
+    <WorkspacePath>D:\261\Microprocessors_Microcontrollers\assignment\CO3009-Traffic-Light-System\Traffic_light\</WorkspacePath>
     <underRoot>true</underRoot>
     <TrustZone>0</TrustZone>
-    <HAL_Driver>C:\Users\ACER\STM32Cube\Repository\STM32Cube_FW_F1_V1.8.7</HAL_Driver>
+    <HAL_Driver>C:\Users\Luan\STM32Cube\Repository\STM32Cube_FW_F1_V1.8.7</HAL_Driver>
     <CMSIS>Drivers/CMSIS</CMSIS>
     <Toolchain>STM32CubeIDE</Toolchain>
     <IocFile>Traffic_light.ioc</IocFile>
@@ -30,7 +30,7 @@
             <memory access="xrw" name="RAM" size="20" start="0x20000000"/>
             <memory access="rx" name="FLASH" size="128" start="0x8000000"/>
           </memories>
-          <startup>C:\Users\ACER\STM32Cube\Repository\STM32Cube_FW_F1_V1.8.7\Drivers\CMSIS\Device\ST\STM32F1xx\Source\Templates\gcc\startup_stm32f103xb.s</startup>
+          <startup>C:\Users\Luan\STM32Cube\Repository\STM32Cube_FW_F1_V1.8.7\Drivers\CMSIS\Device\ST\STM32F1xx\Source\Templates\gcc\startup_stm32f103xb.s</startup>
           <LinkSettings>
             <LinkAdditionalLibs/>
           </LinkSettings>

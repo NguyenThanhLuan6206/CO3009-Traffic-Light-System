@@ -69,7 +69,42 @@ static void MX_TIM2_Init(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
+	/* 1. Hàm test cho Cụm đèn 1 (Chân D3, D4) */
+	void traffic_light_1_test(void) {
+	    static uint8_t state1 = 0;
+	    state1 = (state1 + 1) % 3; // Luân chuyển 0 -> 1 -> 2 -> 0
 
+	    if (state1 == 0) {
+	        // Bật Đỏ (Giả sử D3=0, D4=1)
+	        HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, GPIO_PIN_RESET);
+	        HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, GPIO_PIN_SET);
+	    } else if (state1 == 1) {
+	        // Bật Vàng (Giả sử D3=1, D4=0)
+	        HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, GPIO_PIN_SET);
+	        HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, GPIO_PIN_RESET);
+	    } else {
+	        // Bật Xanh (Giả sử D3=1, D4=1)
+	        HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, GPIO_PIN_SET);
+	        HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, GPIO_PIN_SET);
+	    }
+	}
+
+	/* 2. Hàm test cho Cụm đèn 2 (Chân D5, D6) */
+	void traffic_light_2_test(void) {
+	    static uint8_t state2 = 0;
+	    state2 = (state2 + 1) % 3;
+
+	    if (state2 == 0) {
+	        HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, GPIO_PIN_RESET);
+	        HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_SET);
+	    } else if (state2 == 1) {
+	        HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, GPIO_PIN_SET);
+	        HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_RESET);
+	    } else {
+	        HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, GPIO_PIN_SET);
+	        HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_SET);
+	    }
+	}
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -93,7 +128,12 @@ int main(void)
   MX_I2C1_Init();
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
+  HAL_TIM_Base_Start_IT(&htim2);
+  SCH_Init();
 
+  // Thêm task chớp LED 1 chu kỳ 0.5s (50 tick) và LED 2 chu kỳ 1s (100 tick)
+  SCH_Add_Task(traffic_light_1_test, 0, 50);
+  SCH_Add_Task(traffic_light_2_test, 0, 100);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -101,7 +141,7 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-
+	  SCH_Dispatch_Tasks();
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
@@ -253,7 +293,12 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
+    // Giả sử bạn cấu hình TIM2 sinh ngắt mỗi 10ms trên CubeIDE
+    if (htim->Instance == TIM2) {
+        SCH_Update();
+    }
+}
 /* USER CODE END 4 */
 
 /**
